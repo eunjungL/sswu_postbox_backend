@@ -17,5 +17,5 @@ class Keyword(models.Model):
 
 
 class Notice(models.Model):
-    title = models.CharField()
+    title = models.CharField(max_length=100)
     url = models.URLField()
