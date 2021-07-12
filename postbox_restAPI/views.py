@@ -9,4 +9,3 @@ from postbox_restAPI.serializers import NoticeSerializer, KeywordSerializer, Use
 class UserViewSet(ModelViewSet):
     queryset = UserInfo.objects.all()
     serializer_class = UserInfoSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
