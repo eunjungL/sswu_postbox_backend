@@ -5,14 +5,14 @@ from django.contrib.auth.models import User
 
 
 class UserInfo(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     user_major = models.CharField(max_length=45, null=False)
-    user_major2 = models.CharField(max_length=45, null=True)
-    user_major3 = models.CharField(max_length=45, null=True)
+    user_major2 = models.CharField(max_length=45, null=True, blank=True)
+    user_major3 = models.CharField(max_length=45, null=True, blank=True)
 
 
 class Keyword(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    user_id = models.OneToOneField(UserInfo, on_delete=models.CASCADE)
     keyword = models.CharField(max_length=45)
 
 
