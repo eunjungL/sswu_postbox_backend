@@ -1,7 +1,10 @@
+from abc import ABC
+
 from rest_framework import serializers
 from postbox.models import UserInfo, Notice, Keyword
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -48,3 +51,13 @@ class KeywordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Keyword
         fields = "__all__"
+
+
+class MyTokenObtainPariSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        token = super(MyTokenObtainPariSerializer, cls).get_token(user)
+
+        token['username'] = user.username
+        return token
