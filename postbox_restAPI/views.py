@@ -10,7 +10,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 class UserViewSet(ModelViewSet):
     queryset = UserInfo.objects.all()
     serializer_class = UserInfoSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
 class MyObtainTokenPairView(TokenObtainPairView):
