@@ -40,6 +40,12 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
         return user_info
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['user'] = instance.user.username
+
+        return ret
+
 
 class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
