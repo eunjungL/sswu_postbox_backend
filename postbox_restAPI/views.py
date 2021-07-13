@@ -15,3 +15,8 @@ class UserViewSet(ModelViewSet):
 class MyObtainTokenPairView(TokenObtainPairView):
     permission_classes = [permissions.AllowAny]
     serializer_class = MyTokenObtainPariSerializer
+
+
+class KeywordViewSet(ModelViewSet):
+    queryset = Keyword.objects.all()
+    serializer_class = KeywordSerializer

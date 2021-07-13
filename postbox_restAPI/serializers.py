@@ -58,6 +58,12 @@ class KeywordSerializer(serializers.ModelSerializer):
         model = Keyword
         fields = "__all__"
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['user_id'] = instance.user_id.user.username
+
+        return ret
+
 
 class MyTokenObtainPariSerializer(TokenObtainPairSerializer):
 
