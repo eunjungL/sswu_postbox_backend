@@ -20,3 +20,4 @@ class MyObtainTokenPairView(TokenObtainPairView):
 class KeywordViewSet(ModelViewSet):
     queryset = Keyword.objects.all()
     serializer_class = KeywordSerializer
+    permission_classes = [permissions.IsAuthenticated]

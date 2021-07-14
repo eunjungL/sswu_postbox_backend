@@ -12,7 +12,7 @@ class UserInfo(models.Model):
 
 
 class Keyword(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     keyword = models.CharField(max_length=45)
 
 

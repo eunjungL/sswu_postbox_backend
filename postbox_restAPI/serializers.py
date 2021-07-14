@@ -46,7 +46,6 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
         return ret
 
-
 class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
@@ -63,6 +62,16 @@ class KeywordSerializer(serializers.ModelSerializer):
         ret['user'] = instance.user.username
 
         return ret
+
+    def create(self, validated_data):
+        keyword = Keyword.objects.create(
+            user=self.context['request'].user,
+            keyword=validated_data['keyword']
+        )
+
+        keyword.save()
+
+        return keyword
 
 
 class MyTokenObtainPariSerializer(TokenObtainPairSerializer):
