@@ -60,7 +60,7 @@ class KeywordSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        ret['user_id'] = instance.user_id.user.username
+        ret['user'] = instance.user.username
 
         return ret
 
