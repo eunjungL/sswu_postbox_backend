@@ -1,8 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.views import APIView
 from postbox.models import User, UserInfo, Keyword, Notice
 from postbox_restAPI.serializers import (NoticeSerializer, KeywordSerializer, UserInfoSerializer,
-                                         MyTokenObtainPariSerializer)
+                                         LoginSerializer)
 from rest_framework import permissions, status, generics
 from rest_framework.response import Response
 
@@ -14,9 +13,9 @@ class UserViewSet(ModelViewSet):
     serializer_class = UserInfoSerializer
 
 
-class MyObtainTokenPairView(TokenObtainPairView):
+class LoginView(TokenObtainPairView):
     permission_classes = [permissions.AllowAny]
-    serializer_class = MyTokenObtainPariSerializer
+    serializer_class = LoginSerializer
 
 
 class KeywordViewSet(ModelViewSet):

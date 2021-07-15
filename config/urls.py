@@ -27,8 +27,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
 
-    path('login/', views.MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
+    path('login/', views.LoginView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    path('detail/keywords/', views.KeywordDetailViewSet.as_view({'get': 'list', 'delete': 'destroy'}))
+    path('detail/keywords/', views.KeywordDetailViewSet.as_view({'get': 'list', 'delete': 'destroy'})),
+    path('search/keywords/', views.KeywordSearchViewSet.as_view({'get': 'list'})),
 ]
