@@ -46,6 +46,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
         return ret
 
+
 class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
