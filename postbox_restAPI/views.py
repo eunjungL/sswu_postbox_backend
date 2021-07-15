@@ -27,3 +27,4 @@ class KeywordViewSet(ModelViewSet):
         query_set = queryset.filter(user=self.request.user)
 
         return query_set
+
