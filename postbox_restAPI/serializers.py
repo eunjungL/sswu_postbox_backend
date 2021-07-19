@@ -1,9 +1,10 @@
 from abc import ABC
 
-from rest_framework import serializers
+from rest_framework import serializers, status
 from postbox.models import UserInfo, Notice, Keyword
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
+from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
@@ -65,12 +66,13 @@ class KeywordSerializer(serializers.ModelSerializer):
         return ret
 
     def create(self, validated_data):
-        keyword = Keyword.objects.create(
+        keyword, created = Keyword.objects.get_or_create(
             user=self.context['request'].user,
             keyword=validated_data['keyword']
         )
 
-        keyword.save()
+        if created:
+            keyword.save()
 
         return keyword
 
