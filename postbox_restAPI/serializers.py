@@ -83,3 +83,4 @@ class LoginSerializer(TokenObtainPairSerializer):
 
         token['username'] = user.username
         return token
+
