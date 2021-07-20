@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from postbox.models import User, UserInfo, Keyword, Notice
 from postbox_restAPI.serializers import (NoticeSerializer, KeywordSerializer, UserInfoSerializer,
                                          LoginSerializer)
-from rest_framework import permissions, status, generics
+from rest_framework import permissions, status, generics, filters
 from rest_framework.response import Response
 
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -25,6 +25,9 @@ class KeywordViewSet(ModelViewSet):
 
 
 class KeywordDetailViewSet(ModelViewSet):
+    search_fields = ['keyword']
+    filter_backends = (filters.SearchFilter,)
+
     queryset = Keyword.objects.all()
     serializer_class = KeywordSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
