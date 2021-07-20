@@ -73,6 +73,9 @@ class KeywordSerializer(serializers.ModelSerializer):
 
         if created:
             keyword.save()
+        else:
+            keyword.keyword = "duplicate"
+            return keyword
 
         return keyword
 
