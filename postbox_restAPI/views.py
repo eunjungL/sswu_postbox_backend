@@ -60,3 +60,9 @@ class KeywordSearchViewSet(ModelViewSet):
         queryset = queryset.filter(keyword=keyword)
 
         return queryset
+
+
+class NoticeViewSet(ModelViewSet):
+    queryset = Notice.objects.all()
+    serializer_class = NoticeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
