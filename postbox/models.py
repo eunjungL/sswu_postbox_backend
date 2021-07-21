@@ -24,7 +24,7 @@ class Keyword(models.Model):
 
 class Notice(models.Model):
     title = models.CharField(max_length=100)
-    url = models.URLField()
+    content = models.TextField()
     store = models.BooleanField(default=False)
     read = models.BooleanField(default=False)
 
