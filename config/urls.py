@@ -33,5 +33,7 @@ urlpatterns = [
 
     path('detail/keywords/', views.KeywordDetailViewSet.as_view({'get': 'list', 'delete': 'destroy'})),
 
-    path('update/notice/', views.NoticeUpdateView.as_view())
+    path('update/notice/', views.NoticeUpdateView.as_view()),
+    path('unread/notice/', views.NoticeUnreadCountView.as_view()),
+    path('stored/notice/', views.NoticeStoredCountView.as_view())
 ]

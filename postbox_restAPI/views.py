@@ -69,3 +69,23 @@ class NoticeUpdateView(generics.UpdateAPIView):
         serializer.save()
 
         return Response(serializer.data)
+
+
+class NoticeUnreadCountView(generics.ListAPIView):
+    queryset = Notice.objects.all()
+    serializer_class = NoticeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = self.queryset.filter(read=False)
+        return queryset
+
+
+class NoticeStoredCountView(generics.ListAPIView):
+    queryset = Notice.objects.all()
+    serializer_class = NoticeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = self.queryset.filter(store=True)
+        return queryset
