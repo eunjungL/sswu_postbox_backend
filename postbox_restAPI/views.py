@@ -52,3 +52,17 @@ class NoticeViewSet(ModelViewSet):
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class NoticeUpdateView(generics.UpdateAPIView):
+    queryset = Notice.objects.all()
+    serializer_class = NoticeSerializer
+    permissions_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def partial_update(self, request, *args, **kwargs):
+        queryset = Notice.objects.get(title=self.request.data['title'])
+        serializer = self.serializer_class(queryset, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
