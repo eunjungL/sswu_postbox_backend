@@ -49,6 +49,9 @@ class KeywordDetailViewSet(ModelViewSet):
 
 
 class NoticeViewSet(ModelViewSet):
+    search_fields = ['title']
+    filter_backends = (filters.SearchFilter,)
+
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
