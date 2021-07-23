@@ -48,20 +48,6 @@ class KeywordDetailViewSet(ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class KeywordSearchViewSet(ModelViewSet):
-    queryset = Keyword.objects.all()
-    serializer_class = KeywordSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def get_queryset(self):
-        queryset = self.queryset.filter(user=self.request.user)
-        keyword = self.request.query_params.get('keyword')
-
-        queryset = queryset.filter(keyword=keyword)
-
-        return queryset
-
-
 class NoticeViewSet(ModelViewSet):
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
