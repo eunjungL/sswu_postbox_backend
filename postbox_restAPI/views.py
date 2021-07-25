@@ -56,13 +56,18 @@ class NoticeViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-class NoticeUpdateView(generics.UpdateAPIView):
-    queryset = Notice.objects.all()
-    serializer_class = NoticeSerializer
+class UserNoticeViewSet(ModelViewSet):
+    queryset = UserNotice.objects.all()
+    serializer_class = UserNoticeSerializer
+
+
+class UserNoticeUpdateView(generics.UpdateAPIView):
+    queryset = UserNotice.objects.all()
+    serializer_class = UserNoticeSerializer
     permissions_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def partial_update(self, request, *args, **kwargs):
-        queryset = Notice.objects.get(title=self.request.data['title'])
+        queryset = UserNotice.objects.get(notice__title=self.request.data['title'])
         serializer = self.serializer_class(queryset, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -70,9 +75,9 @@ class NoticeUpdateView(generics.UpdateAPIView):
         return Response(serializer.data)
 
 
-class NoticeUnreadCountView(generics.ListAPIView):
-    queryset = Notice.objects.all()
-    serializer_class = NoticeSerializer
+class UserNoticeUnreadCountView(generics.ListAPIView):
+    queryset = UserNotice.objects.all()
+    serializer_class = UserNoticeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
@@ -80,16 +85,12 @@ class NoticeUnreadCountView(generics.ListAPIView):
         return queryset
 
 
-class NoticeStoredCountView(generics.ListAPIView):
-    queryset = Notice.objects.all()
-    serializer_class = NoticeSerializer
+class UserNoticeStoredCountView(generics.ListAPIView):
+    queryset = UserNotice.objects.all()
+    serializer_class = UserNoticeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         queryset = self.queryset.filter(store=True)
         return queryset
 
-
-class UserNoticeViewSet(ModelViewSet):
-    queryset = UserNotice.objects.all()
-    serializer_class = UserNoticeSerializer
