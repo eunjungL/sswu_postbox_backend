@@ -8,7 +8,7 @@ from postbox.models import Notice
 
 from idlelib import browser
 from urllib.request import urlopen
-import bs4
+import bs4, datetime
 from selenium import webdriver
 
 # 드라이버 가져오기
@@ -30,6 +30,7 @@ def content(a_href):
 
     # 작성일
     dateCreated = dls[0].find('dd').text.strip()
+    dateCreated2 = datetime.datetime.strptime(dateCreated, '%Y.%m.%d')
     # 수정일
     dateModification = dls[1].find('dd').text.strip()
     # 작성자
@@ -53,6 +54,7 @@ def content(a_href):
     files = file_dd.findAll("a", {"class": "file"})
 
     i = 0
+    file_names = {}
     for file in files:
         # 첨부 파일 이름
         file_name = file.text.strip()
@@ -60,6 +62,8 @@ def content(a_href):
         # 첨부 파일 링크
         file_a = files[i]["href"]
         print(file_a + "\n")
+
+        file_names[file_name] = file_a
         i = i + 1
 
     # 공지사항 내용-----------------------------------------------------------------------------------
@@ -67,7 +71,7 @@ def content(a_href):
     notice = bs_obj.find("div", {"class": "artclView"}).text
     print(notice)
 
-    return title, notice
+    return title, notice, dateCreated2, file_names
 
 
 # 첫 번째 페이지 -> 처음부터 끝까지 모든 공지 출력
@@ -79,8 +83,12 @@ def first_page():
     for a_artclTdTitle in a_artclTdTitles:
         a_href = a_artclTdTitle.get_attribute('href')
         print("첫 번째 페이지 " + str(i) + " 번째 공지사항--------------------------------------------------------------------")
-        title, notice = content(a_href)
-        data[title] = notice
+        title, notice, date_created, file_names = content(a_href)
+        notices = []
+        notices.append(notice)
+        notices.append(date_created)
+        notices.append(file_names)
+        data[title] = notices
         i = i + 1
 
     return data
@@ -106,10 +114,12 @@ def click_page(page, n, m):
     for a_artclTdTitle in a_artclTdTitles_13:
         print(str(page_temp) + " 번째 페이지 " + str(i) + " 번째 공지사항----------------------------------------------------------------")
         a_href = a_artclTdTitle.get_attribute('href')
-
-        title, notice = content(a_href)
-        data[title] = notice
-
+        title, notice, date_created, file_names = content(a_href)
+        notices = []
+        notices.append(notice)
+        notices.append(date_created)
+        notices.append(file_names)
+        data[title] = notices
         i = i + 1
 
     return data
@@ -187,21 +197,20 @@ def graduate_foreigner():
 
 hacksa_dict = hacksa()
 for title, notice in hacksa_dict.items():
-    Notice(title=title, content=notice).save()
+    Notice(title=title, content=notice[0], date=notice[1], attachments=notice[2]).save()
 
 normal_dict = normal()
 for title, notice in normal_dict.items():
-    Notice(title=title, content=notice).save()
+    Notice(title=title, content=notice[0], date=notice[1], attachments=notice[2]).save()
 
 admission_dict = Admission()
 for title, notice in admission_dict.items():
-    Notice(title=title, content=notice)
+    Notice(title=title, content=notice[0], date=notice[1], attachments=notice[2]).save()
 
 employment_dict = employment()
 for title, notice in employment_dict.items():
-    Notice(title=title, content=notice)
+    Notice(title=title, content=notice[0], date=notice[1], attachments=notice[2]).save()
 
 graduate_dict = graduate_foreigner()
 for title, notice in graduate_dict.items():
-    Notice(title=title, content=notice)
-
+    Notice(title=title, content=notice[0], date=notice[1], attachments=notice[2]).save()
