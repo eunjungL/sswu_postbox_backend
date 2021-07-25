@@ -5,8 +5,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 import django
 django.setup()
 from postbox.models import Notice
-
-from idlelib import browser
 from urllib.request import urlopen
 import bs4, datetime
 from selenium import webdriver
