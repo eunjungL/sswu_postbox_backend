@@ -38,4 +38,4 @@ class UserNotice(models.Model):
     read = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user
+        return self.notice.title

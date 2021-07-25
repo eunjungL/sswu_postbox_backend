@@ -4,6 +4,7 @@ from rest_framework import serializers, status
 from postbox.models import UserInfo, Notice, Keyword, UserNotice
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
+from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -60,21 +61,30 @@ class UserNoticeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def to_representation(self, instance):
-        ret = super().to_representation(instance)
+        ret = super(UserNoticeSerializer, self).to_representation(instance)
         ret['user'] = instance.user.username
+        ret['notice'] = instance.notice.title
 
         return ret
 
     def create(self, validated_data):
-        keyword = Keyword.objects.filter(user=self.context['request'].user)
-        notices = Notice.obejcts.filter(title__in=keyword)
+        keywords = Keyword.objects.filter(user=self.context['request'].user)
 
+        notices = []
+        for keyword in keywords:
+            for notice in Notice.objects.filter(title__icontains=keyword):
+                notices.append(notice)
+
+        user_notices = []
         for notice in notices:
-            user_notice = UserNotice.obejcts.create(
-                user=self.context['request'].user,
-                notice=notice
+            user_notice = UserNotice.objects.create(
+                   user=self.context['request'].user,
+                   notice=notice
             )
             user_notice.save()
+            user_notices.append(user_notice)
+
+        return user_notices[0]
 
 
 class KeywordSerializer(serializers.ModelSerializer):

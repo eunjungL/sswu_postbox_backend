@@ -4,7 +4,6 @@ from postbox_restAPI.serializers import (NoticeSerializer, KeywordSerializer, Us
                                          LoginSerializer, UserNoticeSerializer)
 from rest_framework import permissions, status, generics, filters
 from rest_framework.response import Response
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 
