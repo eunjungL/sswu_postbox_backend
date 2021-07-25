@@ -1,7 +1,7 @@
 from abc import ABC
 
 from rest_framework import serializers, status
-from postbox.models import UserInfo, Notice, Keyword
+from postbox.models import UserInfo, Notice, Keyword, UserNotice
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from rest_framework.response import Response
@@ -52,6 +52,29 @@ class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
         fields = "__all__"
+
+
+class UserNoticeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserNotice
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['user'] = instance.user.username
+
+        return ret
+
+    def create(self, validated_data):
+        keyword = Keyword.objects.filter(user=self.context['request'].user)
+        notices = Notice.obejcts.filter(title__in=keyword)
+
+        for notice in notices:
+            user_notice = UserNotice.obejcts.create(
+                user=self.context['request'].user,
+                notice=notice
+            )
+            user_notice.save()
 
 
 class KeywordSerializer(serializers.ModelSerializer):

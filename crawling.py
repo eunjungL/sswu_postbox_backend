@@ -12,7 +12,7 @@ import bs4
 from selenium import webdriver
 
 # 드라이버 가져오기
-driver = webdriver.Chrome('C:/Users/dldms/Downloads/chromedriver_win32/chromedriver.exe')
+driver = webdriver.Chrome('C:/Users/user/Downloads/chromedriver_win32/chromedriver.exe')
 
 
 def content(a_href):

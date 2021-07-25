@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
-from postbox.models import User, UserInfo, Keyword, Notice
+from postbox.models import User, UserInfo, Keyword, Notice, UserNotice
 from postbox_restAPI.serializers import (NoticeSerializer, KeywordSerializer, UserInfoSerializer,
-                                         LoginSerializer)
+                                         LoginSerializer, UserNoticeSerializer)
 from rest_framework import permissions, status, generics, filters
 from rest_framework.response import Response
 
@@ -89,3 +89,8 @@ class NoticeStoredCountView(generics.ListAPIView):
     def get_queryset(self):
         queryset = self.queryset.filter(store=True)
         return queryset
+
+
+class UserNoticeViewSet(ModelViewSet):
+    queryset = UserNotice.objects.all()
+    serializer_class = UserNoticeSerializer
