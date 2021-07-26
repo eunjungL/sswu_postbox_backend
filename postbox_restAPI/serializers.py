@@ -77,12 +77,16 @@ class UserNoticeSerializer(serializers.ModelSerializer):
 
         user_notices = []
         for notice in notices:
-            user_notice = UserNotice.objects.create(
+            user_notice, created = UserNotice.objects.get_or_create(
                    user=self.context['request'].user,
                    notice=notice
             )
-            user_notice.save()
-            user_notices.append(user_notice)
+            if created:
+                user_notice.save()
+                user_notices.append(user_notice)
+            else:
+                user_notice.notice.title = "duplicate"
+                user_notices.append(user_notice)
 
         return user_notices[0]
 
