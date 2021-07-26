@@ -60,16 +60,11 @@ class UserNoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserNotice
         fields = "__all__"
+        depth = 1
 
     def to_representation(self, instance):
         ret = super(UserNoticeSerializer, self).to_representation(instance)
         ret['user'] = instance.user.username
-
-        notice = {}
-        notice['title'] = instance.notice.title
-        notice['date'] = instance.notice.date
-        notice['content'] = instance.notice.content
-        ret['notice'] = notice
 
         return ret
 
