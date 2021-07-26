@@ -13,7 +13,9 @@ from selenium import webdriver
 desktop_driver = 'C:/Users/user/Downloads/chromedriver_win32/chromedriver.exe'
 laptop_driver = 'C:/Users/dldms/Downloads/chromedriver_win32/chromedriver.exe'
 
-driver = webdriver.Chrome(laptop_driver)
+options = webdriver.ChromeOptions()
+options.add_argument('headless')
+driver = webdriver.Chrome(laptop_driver, options=options)
 
 
 def content(a_href):
@@ -195,20 +197,35 @@ def graduate_foreigner():
 
 hacksa_dict = hacksa()
 for title, notice in hacksa_dict.items():
-    Notice(title=title, content=notice[0], date=notice[1], attachments=notice[2]).save()
+    notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1],
+                                                    attachments=notice[2])
+    if created:
+        notices.save()
 
 normal_dict = normal()
 for title, notice in normal_dict.items():
-    Notice(title=title, content=notice[0], date=notice[1], attachments=notice[2]).save()
+    notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1],
+                                                    attachments=notice[2])
+    if created:
+        notices.save()
 
 admission_dict = Admission()
 for title, notice in admission_dict.items():
-    Notice(title=title, content=notice[0], date=notice[1], attachments=notice[2]).save()
+    notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1],
+                                                    attachments=notice[2])
+    if created:
+        notices.save()
 
 employment_dict = employment()
 for title, notice in employment_dict.items():
-    Notice(title=title, content=notice[0], date=notice[1], attachments=notice[2]).save()
+    notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1],
+                                                    attachments=notice[2])
+    if created:
+        notices.save()
 
 graduate_dict = graduate_foreigner()
 for title, notice in graduate_dict.items():
-    Notice(title=title, content=notice[0], date=notice[1], attachments=notice[2]).save()
+    notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1],
+                                                    attachments=notice[2])
+    if created:
+        notices.save()

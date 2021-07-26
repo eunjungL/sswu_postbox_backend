@@ -18,6 +18,7 @@ driver = webdriver.Chrome(laptop_driver)
 # 성신 로그인 페이지에 접속
 driver.get('https://portal.sungshin.ac.kr/sso/login.jsp')
 
+
 def login(id, password):
     sleep(0.5)
     # 포탈 아이디
@@ -28,8 +29,10 @@ def login(id, password):
     # 로그인 버튼 누르기
     driver.find_element_by_xpath('//*[@id="login_mobile"]/div[1]/div/ul/li/ul/div/fieldset/a').click()
 
+
 # 로그인 수행
 login('20190996', 'a!05250525')
+
 
 def content(url):
     tbody = driver.find_element_by_tag_name("tbody")
@@ -53,6 +56,7 @@ def content(url):
     print(notice)
 
     return title, notice, dateCreated2
+
 
 def crawling_url_bypage(page, n):
     pageIndex = driver.find_element_by_id('pageIndex')
@@ -90,9 +94,18 @@ def hacksa():
     for i in range(1, 3):
         driver.get('https://portal.sungshin.ac.kr/portal/ssu/menu/notice/ssuboard02.page')
         driver.switch_to.frame('IframePortlet_8656')
-        hacksa_dict = crawling_url_bypage(i, '02')
+
+        data = crawling_url_bypage(i, '02')
+        for data_key in data.keys():
+            if data_key in hacksa_dict:
+                data_value = data.get(data_key)
+                data.pop(data_key)
+                data_key = data_key + " ver." + (data_value[1].strftime("%Y-%m-%d"))
+                data[data_key] = data_value
+        hacksa_dict.update(data)
 
     return hacksa_dict
+
 
 # 학부 장학
 def scholarship():
@@ -103,17 +116,36 @@ def scholarship():
     for i in range(1, 3):
         driver.get('https://portal.sungshin.ac.kr/portal/ssu/menu/notice/ssuboard10.page')
         driver.switch_to.frame('IframePortlet_9616')
-        scholarship_dict = crawling_url_bypage(i, '10')
+
+        data = crawling_url_bypage(i, '10')
+        for data_key in data.keys():
+            if data_key in hacksa_dict:
+                data_value = data.get(data_key)
+                data.pop(data_key)
+                data_key = data_key + " ver." + (data_value[1].strftime("%Y-%m-%d"))
+                data[data_key] = data_value
+        scholarship_dict.update(data)
+
     return scholarship_dict
 
 
 hacksa_dict = hacksa()
+print(hacksa_dict)
 for title, notice in hacksa_dict.items():
-    Notice(title=title, content=notice[0], date=notice[1]).save()
+    notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1])
+
+    print(notices)
+    if created:
+        notices.save()
+
 
 scholarship_dict = scholarship()
+print(scholarship_dict)
 for title, notice in scholarship_dict.items():
-    Notice(title=title, content=notice[0], date=notice[1]).save()
+   notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1])
+
+   if created:
+       notices.save()
 
 # 포탈에서 나가기
 driver.quit()
