@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+import json
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -63,7 +64,12 @@ class UserNoticeSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super(UserNoticeSerializer, self).to_representation(instance)
         ret['user'] = instance.user.username
-        ret['notice'] = instance.notice.title
+
+        notice = {}
+        notice['title'] = instance.notice.title
+        notice['date'] = instance.notice.date
+        notice['content'] = instance.notice.content
+        ret['notice'] = notice
 
         return ret
 
