@@ -13,7 +13,7 @@ from postbox.models import Notice
 desktop_driver = 'C:/Users/user/Downloads/chromedriver_win32/chromedriver.exe'
 laptop_driver = 'C:/Users/dldms/Downloads/chromedriver_win32/chromedriver.exe'
 
-driver = webdriver.Chrome(laptop_driver)
+driver = webdriver.Chrome(desktop_driver)
 
 # 성신 로그인 페이지에 접속
 driver.get('https://portal.sungshin.ac.kr/sso/login.jsp')

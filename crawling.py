@@ -15,7 +15,7 @@ laptop_driver = 'C:/Users/dldms/Downloads/chromedriver_win32/chromedriver.exe'
 
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
-driver = webdriver.Chrome(laptop_driver, options=options)
+driver = webdriver.Chrome(desktop_driver, options=options)
 
 
 def content(a_href):
