@@ -1,3 +1,4 @@
+from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from postbox.models import User, UserInfo, Keyword, Notice, UserNotice
 from postbox_restAPI.serializers import (NoticeSerializer, KeywordSerializer, UserInfoSerializer,
@@ -59,6 +60,20 @@ class NoticeViewSet(ModelViewSet):
 class UserNoticeViewSet(ModelViewSet):
     queryset = UserNotice.objects.all()
     serializer_class = UserNoticeSerializer
+
+
+class UserNoticeDestroyView(generics.DestroyAPIView):
+    queryset = UserNotice.objects.all()
+    serializer_class = UserNoticeSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        queryset = self.queryset
+        keyword = self.request.query_params.get('keyword')
+
+        queryset = queryset.filter(notice__title__icontains=keyword)
+        self.perform_destroy(queryset)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class UserNoticeUpdateView(generics.UpdateAPIView):
