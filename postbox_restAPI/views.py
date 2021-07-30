@@ -2,7 +2,7 @@ from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from postbox.models import User, UserInfo, Keyword, Notice, UserNotice
 from postbox_restAPI.serializers import (NoticeSerializer, KeywordSerializer, UserInfoSerializer,
-                                         LoginSerializer, UserNoticeSerializer)
+                                         LoginSerializer, UserNoticeSerializer, UserInfoUpdateSerializer)
 from rest_framework import permissions, status, generics, filters
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -11,6 +11,20 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 class UserViewSet(ModelViewSet):
     queryset = UserInfo.objects.all()
     serializer_class = UserInfoSerializer
+
+
+class UserUpdateView(generics.UpdateAPIView):
+    queryset = UserInfo.objects.all()
+    serializer_class = UserInfoUpdateSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        queryset = self.queryset.get(user=self.request.user)
+        serializer = self.serializer_class(queryset, data=request.data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
 
 
 class LoginView(TokenObtainPairView):

@@ -29,6 +29,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
 
+    path('update/user/', views.UserUpdateView.as_view()),
+
     path('login/', views.LoginView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
