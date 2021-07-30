@@ -13,6 +13,14 @@ class UserViewSet(ModelViewSet):
     serializer_class = UserInfoSerializer
 
 
+class UserDetailView(generics.ListAPIView):
+    queryset = UserInfo.objects.all()
+    serializer_class = UserInfoUpdateSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
+
+
 class UserUpdateView(generics.UpdateAPIView):
     queryset = UserInfo.objects.all()
     serializer_class = UserInfoUpdateSerializer

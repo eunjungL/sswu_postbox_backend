@@ -29,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
 
+    path('detail/user/', views.UserDetailView.as_view()),
     path('update/user/', views.UserUpdateView.as_view()),
 
     path('login/', views.LoginView.as_view(), name='token_obtain_pair'),
