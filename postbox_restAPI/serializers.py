@@ -50,6 +50,12 @@ class UserInfoSerializer(serializers.ModelSerializer):
         return ret
 
 
+class UserInfoUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = "__all__"
+
+
 class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
