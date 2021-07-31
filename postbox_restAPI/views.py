@@ -107,7 +107,8 @@ class UserNoticeUpdateView(generics.UpdateAPIView):
     permissions_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def partial_update(self, request, *args, **kwargs):
-        queryset = UserNotice.objects.get(notice__title=self.request.data['title'])
+        queryset = self.queryset.filter(user=self.request.user)
+        queryset = queryset.get(notice__title=self.request.data['title'])
         serializer = self.serializer_class(queryset, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -121,7 +122,8 @@ class UserNoticeUnreadCountView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        queryset = self.queryset.filter(read=False)
+        queryset = self.queryset.filter(user=self.request.user)
+        queryset = queryset.filter(read=False)
         return queryset
 
 
@@ -131,6 +133,7 @@ class UserNoticeStoredCountView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        queryset = self.queryset.filter(store=True)
+        queryset = self.queryset.filter(user=self.request.user)
+        queryset = queryset.filter(store=True)
         return queryset
 
