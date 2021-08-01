@@ -9,7 +9,7 @@ push_service = FCMNotification(APIKey)
 def send_message(title, keyword):
     data_message = {
         "body": title,
-        "title": "[" + keyword + "] 키워드에 관련된 새 공지가 있습니다."
+        "title": "%s 키워드에 관련된 새 공지가 있습니다." % keyword
     }
 
     keyword = quote(keyword, "utf8")

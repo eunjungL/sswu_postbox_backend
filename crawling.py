@@ -4,10 +4,11 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 import django
 django.setup()
-from postbox.models import Notice
+from postbox.models import Notice, Keyword
 from urllib.request import urlopen
 import bs4, datetime
 from selenium import webdriver
+from send_notification import send_message
 
 # 드라이버 가져오기
 desktop_driver = 'C:/Users/user/Downloads/chromedriver_win32/chromedriver.exe'
@@ -199,33 +200,58 @@ hacksa_dict = hacksa()
 for title, notice in hacksa_dict.items():
     notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1],
                                                     attachments=notice[2])
+
+    keywords = Keyword.objects.all()
     if created:
+        for keyword in keywords:
+            if keyword.keyword in title:
+                send_message(title, keyword.keyword)
         notices.save()
 
 normal_dict = normal()
 for title, notice in normal_dict.items():
     notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1],
                                                     attachments=notice[2])
+
+    keywords = Keyword.objects.all()
     if created:
+        for keyword in keywords:
+            if keyword.keyword in title:
+                send_message(title, keyword.keyword)
         notices.save()
 
 admission_dict = Admission()
 for title, notice in admission_dict.items():
     notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1],
                                                     attachments=notice[2])
+
+    keywords = Keyword.objects.all()
     if created:
+        for keyword in keywords:
+            if keyword.keyword in title:
+                send_message(title, keyword.keyword)
         notices.save()
 
 employment_dict = employment()
 for title, notice in employment_dict.items():
     notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1],
                                                     attachments=notice[2])
+
+    keywords = Keyword.objects.all()
     if created:
+        for keyword in keywords:
+            if keyword.keyword in title:
+                send_message(title, keyword.keyword)
         notices.save()
 
 graduate_dict = graduate_foreigner()
 for title, notice in graduate_dict.items():
     notices, created = Notice.objects.get_or_create(title=title, content=notice[0], date=notice[1],
                                                     attachments=notice[2])
+
+    keywords = Keyword.objects.all()
     if created:
+        for keyword in keywords:
+            if keyword.keyword in title:
+                send_message(title, keyword.keyword)
         notices.save()
