@@ -80,6 +80,8 @@ class NoticeViewSet(ModelViewSet):
 
 
 class UserNoticeViewSet(ModelViewSet):
+    search_fields = ['notice__title']
+    filter_backends = (filters.SearchFilter,)
     queryset = UserNotice.objects.all()
     serializer_class = UserNoticeSerializer
 
