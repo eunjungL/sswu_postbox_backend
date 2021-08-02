@@ -2,6 +2,14 @@ from urls import *
 import requests
 from bs4 import BeautifulSoup
 
+import os
+import datetime
+import django
+from send_notification import send_message
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+django.setup()
+from postbox.models import Notice, Keyword
+
 
 def crawling_bypage(url, page):
     url = url + '?page=' + str(page)
@@ -34,9 +42,10 @@ def crawling_bypage(url, page):
         url = basic_url + tr.find('a')['href']
         # 공지사항 날짜
         day = tr.findAll('td')[2].text.strip()
+        date = datetime.datetime.strptime(day, '%Y.%m.%d')
 
         notices.append(url)
-        notices.append(day)
+        notices.append(date)
         data[title] = notices
 
     return data
@@ -164,3 +173,13 @@ crawling(music, 5)
 crawling(danceArt, 3)
 
 print(data)
+
+for title, notice in data.items():
+    notices, created = Notice.objects.get_or_create(title=title, url=notice[0], date=notice[1])
+
+    keywords = Keyword.objects.all()
+    if created:
+        for keyword in keywords:
+            if keyword.keyword in title:
+                send_message(title, keyword.keyword)
+        notices.save()

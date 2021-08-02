@@ -10,6 +10,9 @@ class UserInfo(models.Model):
     user_major2 = models.CharField(max_length=45, null=True, blank=True)
     user_major3 = models.CharField(max_length=45, null=True, blank=True)
 
+    def __str__(self):
+        return self.user.username
+
 
 class Keyword(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -21,9 +24,8 @@ class Keyword(models.Model):
 
 class Notice(models.Model):
     title = models.CharField(max_length=100)
-    content = models.TextField()
     date = models.DateField(default=timezone.now())
-    attachments = models.URLField(null=True)
+    url = models.URLField()
 
     def __str__(self):
         return self.title
