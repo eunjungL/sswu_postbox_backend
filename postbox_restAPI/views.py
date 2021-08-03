@@ -11,11 +11,13 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 class UserViewSet(ModelViewSet):
     queryset = UserInfo.objects.all()
     serializer_class = UserInfoSerializer
+    pagination_class = None
 
 
 class UserDetailView(generics.ListAPIView):
     queryset = UserInfo.objects.all()
     serializer_class = UserInfoUpdateSerializer
+    pagination_class = None
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
