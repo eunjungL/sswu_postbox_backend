@@ -56,45 +56,45 @@ data = {}
 
 def crawling(url, page):
     for i in range(1, page + 1):
+        print(url)
         data.update(crawling_bypage(url, i))
 
 
 # 학사공지
-crawling(hacksa, 10)
-
+crawling(hacksa, 2)
 # 일반공지
-crawling(normal, 10)
+crawling(normal, 2)
 # 입학공지
-crawling(admission, 3)
+crawling(admission, 2)
 # 취업공지
-crawling(employment, 10)
+crawling(employment, 2)
 # 대학원(외국인)공지
 crawling(graduated_foreigner, 2)
 
 # 컴퓨터공학과
-crawling(computer, 10)
-crawling(computer_hire, 3)
+crawling(computer, 2)
+crawling(computer_hire, 2)
 #
 # 청정융합에너지공학과
 crawling(cleanEnergy_hire, 1)
 crawling(cleanEnergy_outdoor, 1)
 
 # 바이오생명공학과
-crawling(biotechnology, 7)
+crawling(biotechnology, 2)
 crawling(biotechnology_hire, 1)
 
 # 바이오식품공학과
-crawling(biofood_notice, 6)
+crawling(biofood_notice, 2)
 
 # 융합보안공학과
-crawling(security, 7)
+crawling(security, 2)
 crawling(security_hire, 2)
 
 # 정보시스템공학과
-crawling(informationSystems, 7)
+crawling(informationSystems, 2)
 
 # 서비스디자인공학과
-crawling(serviceDesign, 6)
+crawling(serviceDesign, 2)
 crawling(serviceDesign_hire, 1)
 crawling(serviceDesign_outoor, 1)
 
@@ -103,49 +103,53 @@ crawling(ai, 1)
 crawling(ai_outdoor, 1)
 
 # 국어국문학과
-crawling(korean, 10)
-crawling(korean_outdoor, 5)
-crawling(korean_hire, 5)
+crawling(korean, 2)
+crawling(korean_outdoor, 2)
+crawling(korean_hire, 2)
 
 # 영어영문학과
-crawling(english, 10)
+crawling(english, 2)
 crawling(english_outdoor, 1)
-crawling(english_hire, 5)
+crawling(english_hire, 2)
 
 # 독일어문/문화학과
 crawling(german_outdoor, 1)
-crawling(german_hire, 5)
+crawling(german_hire, 2)
 
 # 프랑프어문/문화학과
 crawling(french, 1)
 crawling(french_outdoor, 1)
-crawling(french_hire, 3)
+crawling(french_hire, 2)
 
 # 일본어문/문화학과
-crawling(japanese_hire, 5)
+crawling(japanese_outdoor, 2)
+crawling(japanese_hire, 2)
 
 # 중국어문/문화학과)
 crawling(chinese_outdoor, 1)
-crawling(chinese_hire, 3)
+crawling(chinese_hire, 2)
 
 # 사학과
 crawling(history_outdoor, 1)
-crawling(history_hire, 5)
+crawling(history_hire, 2)
 
 # 교육학과
-crawling(education_hire, 5)
+crawling(education_hire, 2)
 
 # 사회교육과
-crawling(socialEdu_hire, 5)
+crawling(socialEdu_hire, 2)
 
 # 윤리교육과
-crawling(EthicsEdu_hire, 5)
+crawling(EthicsEdu_hire, 2)
 
 # 한문교육과
-crawling(chineseEdu_hire, 5)
+crawling(chineseEdu_hire, 2)
 
 # 유아교육과
-crawling(childhoodEdu_hire, 5)
+crawling(childhoodEdu_hire, 2)
+
+# 작곡과
+crawling(composition, 2)
 
 # 수학과
 crawling(math_hire, 2)
@@ -160,17 +164,17 @@ crawling(it_hire, 2)
 crawling(dataScience_outdoor, 1)
 
 # 뷰티산업학과
-crawling(beauty, 3)
+crawling(beauty, 2)
 crawling(beauty_hire, 1)
 
 # 문화예술경영학과
 crawling(cultureArt, 2)
 
 # 현대실용음악학과
-crawling(music, 5)
+crawling(music, 2)
 
 # 무용예술학과
-crawling(danceArt, 3)
+crawling(danceArt, 2)
 
 print(data)
 

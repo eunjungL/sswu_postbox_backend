@@ -49,6 +49,7 @@ class KeywordViewSet(ModelViewSet):
 class KeywordDetailViewSet(ModelViewSet):
     search_fields = ['keyword']
     filter_backends = (filters.SearchFilter,)
+    pagination_class = None
 
     queryset = Keyword.objects.all()
     serializer_class = KeywordSerializer
@@ -133,6 +134,7 @@ class UserNoticeStoredCountView(generics.ListAPIView):
     queryset = UserNotice.objects.all()
     serializer_class = UserNoticeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = None
 
     def get_queryset(self):
         queryset = self.queryset.filter(user=self.request.user)
