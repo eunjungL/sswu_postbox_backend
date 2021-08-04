@@ -16,6 +16,3 @@ def send_message(title, keyword):
     result = push_service.notify_topic_subscribers(topic_name=keyword, data_message=data_message)
 
     print(result)
-
-
-send_message("title", "장학금")

@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 from url_list import *
 import requests
@@ -52,6 +53,7 @@ data = {}
 
 def entire_realtime_crawling():
     for url in url_list:
+        time.sleep(0.5)
         print(url)
         data.update(realtime_crawling(url))
 
