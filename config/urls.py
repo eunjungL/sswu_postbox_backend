@@ -39,6 +39,6 @@ urlpatterns = [
 
     path('update/notice/', views.UserNoticeUpdateView.as_view()),
     path('unread/notice/', views.UserNoticeUnreadCountView.as_view()),
-    path('stored/notice/', views.UserNoticeStoredCountView.as_view()),
+    path('stored/notice/', views.UserNoticeStoredView.as_view()),
     path('destroy/notice/', views.UserNoticeDestroyView.as_view()),
 ]

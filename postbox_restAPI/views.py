@@ -132,7 +132,7 @@ class UserNoticeUnreadCountView(generics.ListAPIView):
         return queryset
 
 
-class UserNoticeStoredCountView(generics.ListAPIView):
+class UserNoticeStoredView(generics.ListAPIView):
     queryset = UserNotice.objects.all()
     serializer_class = UserNoticeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -141,5 +141,5 @@ class UserNoticeStoredCountView(generics.ListAPIView):
     def get_queryset(self):
         queryset = self.queryset.filter(user=self.request.user)
         queryset = queryset.filter(store=True)
-        return queryset
+        return queryset.order_by('-notice__date')
 
