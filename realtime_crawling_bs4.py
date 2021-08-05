@@ -64,21 +64,17 @@ def entire_realtime_crawling():
 
 # 1시간마다 실행행
 if __name__ =='__main__':
-    now = datetime.now()
-    nowHour = now.hour
-    while True:
-        now = datetime.now()
-        if nowHour != now.hour:
-            nowHour = now.hour
-            entire_realtime_crawling()
-            print(data)
+    entire_realtime_crawling()
+    print(data)
 
-            for title, notice in data.items():
-                notices, created = Notice.objects.get_or_create(title=title, url=notice[0], date=notice[1])
+    for title, notice in data.items():
+        notices, created = Notice.objects.get_or_create(title=title, url=notice[0], date=notice[1])
 
-                keywords = Keyword.objects.all()
-                if created:
-                    for keyword in keywords:
-                        if keyword.keyword in title:
-                            send_message(title, keyword.keyword)
-                    notices.save()
+        keywords = Keyword.objects.all()
+        if created:
+            for keyword in keywords:
+                if keyword.keyword in title:
+                    send_message(title, keyword.keyword)
+            notices.save()
+
+    send_message("1시간마다 실행되나 확인", "test")
