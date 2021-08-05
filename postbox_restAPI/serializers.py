@@ -66,7 +66,6 @@ class UserNoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserNotice
         fields = "__all__"
-        ordering = ('notice__date',)
         depth = 1
 
     def to_representation(self, instance):

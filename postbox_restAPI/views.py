@@ -89,7 +89,7 @@ class UserNoticeViewSet(ModelViewSet):
     serializer_class = UserNoticeSerializer
 
     def get_queryset(self):
-        return self.queryset.filter(user=self.request.user)
+        return self.queryset.filter(user=self.request.user).order_by('-notice__date')
 
 
 class UserNoticeDestroyView(generics.DestroyAPIView):
