@@ -14,8 +14,6 @@ from postbox.models import Notice, Keyword
 
 
 def realtime_crawling(url):
-    try:
-        time.sleep(1)
         req = requests.get(url)
         # html 소스 가져오기
         html = req.text
@@ -48,8 +46,6 @@ def realtime_crawling(url):
             data[title] = notices
 
         return data
-    except AttributeError:
-        print("")
 
 
 data = {}
@@ -57,14 +53,18 @@ data = {}
 
 def entire_realtime_crawling():
     for url in url_list:
-        time.sleep(0.5)
         print(url)
         data.update(realtime_crawling(url))
 
 
 # 1시간마다 실행행
-if __name__ =='__main__':
-    entire_realtime_crawling()
+if __name__ == '__main__':
+    while True:
+        try:
+            entire_realtime_crawling()
+        except Exception:
+            continue
+        break
     print(data)
 
     for title, notice in data.items():
