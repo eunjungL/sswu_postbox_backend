@@ -133,6 +133,8 @@ class UserNoticeUnreadCountView(generics.ListAPIView):
 
 
 class UserNoticeStoredView(generics.ListAPIView):
+    search_fields = ['notice__title']
+    filter_backends = [filters.SearchFilter, ]
     queryset = UserNotice.objects.all()
     serializer_class = UserNoticeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
