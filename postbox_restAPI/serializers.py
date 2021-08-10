@@ -54,6 +54,7 @@ class UserInfoUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         fields = "__all__"
+        depth = 1
 
 
 class NoticeSerializer(serializers.ModelSerializer):
