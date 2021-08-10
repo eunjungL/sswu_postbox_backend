@@ -54,7 +54,12 @@ class UserInfoUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         fields = "__all__"
-        depth = 1
+
+    def to_representation(self, instance):
+        ret = super(UserInfoUpdateSerializer, self).to_representation(instance)
+        ret['user'] = instance.user.username
+
+        return ret
 
 
 class NoticeSerializer(serializers.ModelSerializer):
