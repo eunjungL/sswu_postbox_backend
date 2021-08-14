@@ -12,6 +12,7 @@ def send_message(title, keyword):
         "title": "%s 키워드에 관련된 새 공지가 있습니다." % keyword
     }
 
+    # FCM topic subscriber 는 한글 주제 구독이 안되므로 url encoding 하여 사용
     keyword = quote(keyword, "utf8")
     result = push_service.notify_topic_subscribers(topic_name=keyword, data_message=data_message)
 

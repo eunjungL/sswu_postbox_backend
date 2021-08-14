@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 
+# User
 class UserViewSet(ModelViewSet):
     queryset = UserInfo.objects.all()
     serializer_class = UserInfoSerializer
@@ -19,6 +20,7 @@ class UserDetailView(generics.ListAPIView):
     serializer_class = UserInfoUpdateSerializer
     pagination_class = None
 
+    # Get Method 유저 상세 정보 가져오기
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
 
@@ -27,6 +29,7 @@ class UserUpdateView(generics.UpdateAPIView):
     queryset = UserInfo.objects.all()
     serializer_class = UserInfoUpdateSerializer
 
+    # PATCH Method 유저 정보 수정(학과 수정)
     def partial_update(self, request, *args, **kwargs):
         queryset = self.queryset.get(user=self.request.user)
         serializer = self.serializer_class(queryset, data=request.data, partial=True)
@@ -42,13 +45,16 @@ class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
 
 
+# Keyword
 class KeywordViewSet(ModelViewSet):
+    # POST Method 키워드 생성
     queryset = Keyword.objects.all()
     serializer_class = KeywordSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class KeywordDetailViewSet(ModelViewSet):
+    # 키워드 검색
     search_fields = ['keyword']
     filter_backends = (filters.SearchFilter,)
     pagination_class = None
@@ -57,12 +63,14 @@ class KeywordDetailViewSet(ModelViewSet):
     serializer_class = KeywordSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    # GET Method 각 유저별 키워드 목록 가져오기
     def get_queryset(self):
         queryset = self.queryset
         query_set = queryset.filter(user=self.request.user)
 
         return query_set
 
+    # DELETE Method 각 유저별 키워드 삭제하기
     def destroy(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         keyword_get = self.request.query_params.get('keyword')
@@ -73,7 +81,10 @@ class KeywordDetailViewSet(ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# Notice
 class NoticeViewSet(ModelViewSet):
+    # Crawling 해서 얻은 전체 공지사항 저장 및 조회
+    # 공지사항 제목으로 검색
     search_fields = ['title']
     filter_backends = (filters.SearchFilter,)
 
@@ -83,11 +94,13 @@ class NoticeViewSet(ModelViewSet):
 
 
 class UserNoticeViewSet(ModelViewSet):
+    # 공지사항 제목으로 검색
     search_fields = ['notice__title']
     filter_backends = (filters.SearchFilter,)
     queryset = UserNotice.objects.all()
     serializer_class = UserNoticeSerializer
 
+    # GET Method 각 유저의 키워드 별 공지사항 최신순으로 가져오기
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user).order_by('-notice__date')
 
@@ -96,6 +109,7 @@ class UserNoticeDestroyView(generics.DestroyAPIView):
     queryset = UserNotice.objects.all()
     serializer_class = UserNoticeSerializer
 
+    # DELETE Method 유저의 키워드 삭제 시, 유저 키워드 별 공지사항 CASCADE
     def destroy(self, request, *args, **kwargs):
         queryset = self.queryset
         keyword = self.request.query_params.get('keyword')
@@ -111,6 +125,7 @@ class UserNoticeUpdateView(generics.UpdateAPIView):
     serializer_class = UserNoticeSerializer
     permissions_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    # PATCH Method 읽음 표시 수정 / 보관, 보관 취소 표시 수정
     def partial_update(self, request, *args, **kwargs):
         queryset = self.queryset.filter(user=self.request.user)
         queryset = queryset.get(notice__title=self.request.data['title'])
@@ -126,6 +141,7 @@ class UserNoticeUnreadCountView(generics.ListAPIView):
     serializer_class = UserNoticeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    # GET Method 안 읽은 공지사항만 가져오기
     def get_queryset(self):
         queryset = self.queryset.filter(user=self.request.user)
         queryset = queryset.filter(read=False)
@@ -138,6 +154,7 @@ class UserNoticeStoredView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = None
 
+    # GET Method 보관한 공지사항만 최신순으로 가져오기
     def get_queryset(self):
         queryset = self.queryset.filter(user=self.request.user)
         queryset = queryset.filter(store=True)

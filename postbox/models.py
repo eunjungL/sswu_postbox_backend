@@ -4,6 +4,7 @@ from django.utils import timezone
 # Create your models here.
 
 
+# User
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     user_major = models.CharField(max_length=45, null=False)
@@ -14,6 +15,7 @@ class UserInfo(models.Model):
         return self.user.username
 
 
+# Keyword
 class Keyword(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     keyword = models.CharField(max_length=45)
@@ -22,6 +24,7 @@ class Keyword(models.Model):
         return self.keyword
 
 
+# Notice
 class Notice(models.Model):
     title = models.CharField(max_length=100)
     date = models.DateField(default=timezone.now())

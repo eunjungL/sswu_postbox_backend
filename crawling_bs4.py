@@ -10,6 +10,11 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 from postbox.models import Notice, Keyword
 
+"""
+# 서버 최초 실행 시 데이터 베이스를 채우기 위해 각 게시판의 2 페이지씩 crawling 
+# 2 페이지가 되지 않는 게시판은 한 페이지씩                                 
+"""
+
 
 def crawling_bypage(url, page):
     url = url + '?page=' + str(page)
@@ -51,7 +56,7 @@ def crawling_bypage(url, page):
     return data
 
 
-data = {}
+data = {}  # crawling 으로 얻은 모든 정보 data dict 에 저장
 
 
 def crawling(url, page):
@@ -178,6 +183,7 @@ crawling(danceArt, 2)
 
 print(data)
 
+# data 에 들어있는 공지사항들 DB 의 Notice table 에 저장
 for title, notice in data.items():
     notices, created = Notice.objects.get_or_create(title=title, url=notice[0], date=notice[1])
 
@@ -185,5 +191,6 @@ for title, notice in data.items():
     if created:
         for keyword in keywords:
             if keyword.keyword in title:
+                # 공지사항 제목에 유저가 추가한 키워드가 들어가면 유저에게 알림 발송
                 send_message(title, keyword.keyword)
         notices.save()

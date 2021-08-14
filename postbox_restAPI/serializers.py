@@ -10,7 +10,18 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import json
 
 
+# User
+class LoginSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super(LoginSerializer, cls).get_token(user)
+
+        token['username'] = user.username
+        return token
+
+
 class UserInfoSerializer(serializers.ModelSerializer):
+    # GET Method 유저 목록
     username = serializers.CharField(write_only=True, required=True)
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
@@ -25,6 +36,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
         return attrs
 
+    # POST Method 회원가입
     def create(self, validated_data):
         user = User.objects.create(
             username=validated_data['username']
@@ -51,11 +63,13 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
 
 class UserInfoUpdateSerializer(serializers.ModelSerializer):
+    # PATCH Method 유저 정보 수정(학과 수정)
     class Meta:
         model = UserInfo
         fields = "__all__"
 
 
+# Notice
 class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
@@ -74,6 +88,7 @@ class UserNoticeSerializer(serializers.ModelSerializer):
 
         return ret
 
+    # POST Method 각 유저가 설정한 키워드 별로 공지사항 분리해서 저장하기
     def create(self, validated_data):
         keywords = Keyword.objects.filter(user=self.context['request'].user)
 
@@ -98,6 +113,7 @@ class UserNoticeSerializer(serializers.ModelSerializer):
         return user_notices[0]
 
 
+# Keyword
 class KeywordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Keyword
@@ -109,6 +125,7 @@ class KeywordSerializer(serializers.ModelSerializer):
 
         return ret
 
+    # POST Method 키워드 추가하기
     def create(self, validated_data):
         keyword, created = Keyword.objects.get_or_create(
             user=self.context['request'].user,
@@ -123,12 +140,3 @@ class KeywordSerializer(serializers.ModelSerializer):
 
         return keyword
 
-
-class LoginSerializer(TokenObtainPairSerializer):
-
-    @classmethod
-    def get_token(cls, user):
-        token = super(LoginSerializer, cls).get_token(user)
-
-        token['username'] = user.username
-        return token

@@ -13,6 +13,11 @@ django.setup()
 from postbox.models import Notice, Keyword
 
 
+"""
+실시간 crawling을 위한 코드
+
+"""
+
 def realtime_crawling(url):
     while True:
         try:
@@ -54,7 +59,7 @@ def realtime_crawling(url):
             continue
 
 
-data = {}
+data = {}  # crawling 으로 얻은 모든 정보 data dict 에 저장
 
 
 def entire_realtime_crawling():
@@ -63,11 +68,12 @@ def entire_realtime_crawling():
         data.update(realtime_crawling(url))
 
 
-# 1시간마다 실행행
+# 1시간마다 실행은 linux 의 cron 데몬 활용
 if __name__ == '__main__':
     entire_realtime_crawling()
     print(data)
 
+    # data 에 들어있는 공지사항들 DB 의 Notice table 에 저장
     for title, notice in data.items():
         notices, created = Notice.objects.get_or_create(title=title, url=notice[0], date=notice[1])
 
@@ -75,6 +81,7 @@ if __name__ == '__main__':
         if created:
             for keyword in keywords:
                 if keyword.keyword in title:
+                    # 공지사항 제목에 유저가 추가한 키워드가 들어가면 유저에게 알림 발송
                     send_message(title, keyword.keyword)
             notices.save()
 

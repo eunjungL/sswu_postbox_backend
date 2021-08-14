@@ -9,6 +9,12 @@ import django
 django.setup()
 from postbox.models import Notice
 
+
+"""
+구현은 다 했지만 학교 측에서 포탈 공지사항은 저장하지 말라하여 해당 코드는 서비스에 넣지 못한 채로 제출합니다.
+"""
+
+
 # 드라이버 가져오기
 desktop_driver = 'C:/Users/user/Downloads/chromedriver_win32/chromedriver.exe'
 laptop_driver = 'C:/Users/dldms/Downloads/chromedriver_win32/chromedriver.exe'

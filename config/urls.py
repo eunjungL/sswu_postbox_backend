@@ -29,14 +29,18 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
 
+    # 유저 상세 정보 가져오기 / 유저 정보 수정
     path('detail/user/', views.UserDetailView.as_view()),
     path('update/user/', views.UserUpdateView.as_view()),
 
+    # Login
     path('login/', views.LoginView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
+    # 유저 별 키워드 목록, 검색, 삭제
     path('detail/keywords/', views.KeywordDetailViewSet.as_view({'get': 'list', 'delete': 'destroy'})),
 
+    # 공지사항 수정(읽음, 보관상태) / 안읽은 공지사항 가져오기 / 보관된 공지사항 가져오기 / 키워드 삭제 시 공지사항 CASCADE
     path('update/notice/', views.UserNoticeUpdateView.as_view()),
     path('unread/notice/', views.UserNoticeUnreadCountView.as_view()),
     path('stored/notice/', views.UserNoticeStoredView.as_view()),
