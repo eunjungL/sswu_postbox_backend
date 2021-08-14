@@ -68,6 +68,12 @@ class UserInfoUpdateSerializer(serializers.ModelSerializer):
         model = UserInfo
         fields = "__all__"
 
+    def to_representation(self, instance):
+        ret = super(UserInfoUpdateSerializer, self).to_representation(instance)
+        ret['user'] = instance.user.username
+
+        return ret
+
 
 # Notice
 class NoticeSerializer(serializers.ModelSerializer):
